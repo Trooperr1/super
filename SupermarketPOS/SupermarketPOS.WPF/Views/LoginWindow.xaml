@@ -1,9 +1,8 @@
 <Window x:Class="SupermarketPOS.WPF.Views.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="چوونەژوورەوە - سیستەمی POS"
-        Height="500" Width="400"
+        Height="550" Width="450"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="NoResize"
@@ -13,18 +12,19 @@
 
     <Border Background="White"
             CornerRadius="10"
-            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+            BorderBrush="#673AB7"
             BorderThickness="2">
         <Border.Effect>
             <DropShadowEffect BlurRadius="30"
                             Direction="0"
                             ShadowDepth="0"
                             Opacity="0.3"
-                            Color="{DynamicResource Primary}"/>
+                            Color="#673AB7"/>
         </Border.Effect>
 
-        <Grid Margin="30">
+        <Grid Margin="40">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -35,13 +35,13 @@
             </Grid.RowDefinitions>
 
             <!-- لۆگۆ - Logo -->
-            <materialDesign:PackIcon Grid.Row="0"
-                                   Kind="Store"
-                                   Width="80"
-                                   Height="80"
-                                   HorizontalAlignment="Center"
-                                   Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                   Margin="0,0,0,20"/>
+            <Viewbox Grid.Row="0" Width="80" Height="80"
+                     HorizontalAlignment="Center"
+                     Margin="0,0,0,20">
+                <Canvas Width="24" Height="24">
+                    <Path Fill="#673AB7" Data="M12,18H6V14H12M21,14V12L20,7H4L3,12V14H4V20H14V14H18V20H20V14M20,4H4V6H20V4Z"/>
+                </Canvas>
+            </Viewbox>
 
             <!-- سەردێڕ - Title -->
             <TextBlock Grid.Row="1"
@@ -49,7 +49,7 @@
                       FontSize="28"
                       FontWeight="Bold"
                       HorizontalAlignment="Center"
-                      Foreground="{DynamicResource PrimaryHueMidBrush}"
+                      Foreground="#673AB7"
                       Margin="0,0,0,10"/>
 
             <TextBlock Grid.Row="2"
@@ -60,41 +60,115 @@
                       Margin="0,0,0,30"/>
 
             <!-- ناوی بەکارهێنەر - Username -->
-            <TextBox Grid.Row="3"
-                    Name="UsernameTextBox"
-                    materialDesign:HintAssist.Hint="ناوی بەکارهێنەر"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Margin="0,0,0,20"
-                    FontSize="16"
-                    Padding="10"/>
+            <StackPanel Grid.Row="3" Margin="0,0,0,20">
+                <TextBlock Text="ناوی بەکارهێنەر"
+                          FontSize="13"
+                          Foreground="#555"
+                          Margin="0,0,0,5"/>
+                <TextBox Name="UsernameTextBox"
+                        FontSize="16"
+                        Padding="10"
+                        BorderBrush="#673AB7"
+                        BorderThickness="1"/>
+            </StackPanel>
 
             <!-- وشەی نهێنی - Password -->
-            <PasswordBox Grid.Row="4"
-                        Name="PasswordBox"
-                        materialDesign:HintAssist.Hint="وشەی نهێنی"
-                        Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
-                        Margin="0,0,0,20"
-                        FontSize="16"
-                        Padding="10"/>
+            <StackPanel Grid.Row="4" Margin="0,0,0,25">
+                <TextBlock Text="وشەی نهێنی"
+                          FontSize="13"
+                          Foreground="#555"
+                          Margin="0,0,0,5"/>
+                <PasswordBox Name="PasswordBox"
+                            FontSize="16"
+                            Padding="10"
+                            BorderBrush="#673AB7"
+                            BorderThickness="1"/>
+            </StackPanel>
 
             <!-- دوگمەی چوونەژوورەوە - Login Button -->
             <Button Grid.Row="5"
                    Content="چوونەژوورەوە"
                    Click="LoginButton_Click"
-                   Style="{StaticResource MaterialDesignRaisedButton}"
+                   Background="#673AB7"
+                   Foreground="White"
+                   BorderThickness="0"
                    Height="45"
                    FontSize="16"
                    FontWeight="Bold"
-                   Margin="0,0,0,10"/>
+                   Cursor="Hand"
+                   Margin="0,0,0,10">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                           CornerRadius="5"
+                                           Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#7E57C2"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#5E35B1"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <!-- Close Button -->
+            <Button Grid.Row="6"
+                   Content="داخستن"
+                   Click="CloseButton_Click"
+                   Background="Transparent"
+                   Foreground="#673AB7"
+                   BorderBrush="#673AB7"
+                   BorderThickness="1"
+                   Height="40"
+                   FontSize="14"
+                   Cursor="Hand"
+                   Margin="0,0,0,10">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                           BorderBrush="{TemplateBinding BorderBrush}"
+                                           BorderThickness="{TemplateBinding BorderThickness}"
+                                           CornerRadius="5"
+                                           Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#F3E5F5"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
 
             <!-- زانیاری سەرەتایی - Default Credentials -->
-            <StackPanel Grid.Row="6"
+            <StackPanel Grid.Row="7"
                        VerticalAlignment="Bottom"
                        Margin="0,20,0,0">
                 <TextBlock Text="بەکارهێنەری سەرەتایی:"
                           FontSize="12"
                           Foreground="Gray"
-                          HorizontalAlignment="Center"/>
+                          HorizontalAlignment="Center"
+                          FontWeight="Bold"/>
                 <TextBlock Text="ناوی بەکارهێنەر: admin | وشەی نهێنی: admin123"
                           FontSize="11"
                           Foreground="Gray"
