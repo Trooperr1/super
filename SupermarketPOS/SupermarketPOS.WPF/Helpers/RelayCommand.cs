@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace SupermarketPOS.Application.Helpers;
+namespace SupermarketPOS.WPF.Helpers;
 
 /// <summary>
 /// فەرمانی گشتی بۆ MVVM - Relay Command for MVVM
