@@ -23,42 +23,60 @@ public partial class App : System.Windows.Application
     {
         base.OnStartup(e);
 
-        // خوێندنەوەی ڕێکخستنەکان - Load configuration
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-        Configuration = builder.Build();
-
-        // ڕێکخستنی خزمەتگوزارییەکان - Configure services
-        var serviceCollection = new ServiceCollection();
-        ConfigureServices(serviceCollection);
-        _serviceProvider = serviceCollection.BuildServiceProvider();
-
-        // دروستکردنی بنکەی دراوە - Initialize database
-        using (var scope = _serviceProvider.CreateScope())
+        try
         {
-            var context = scope.ServiceProvider.GetRequiredService<SupermarketDbContext>();
-            try
-            {
-                context.Database.Migrate();
-                DbSeeder.SeedAsync(context).Wait();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"هەڵە لە گرێدان بە بنکەی دراوە:\n{ex.Message}\n\nتکایە دڵنیابە لە کارکردنی SQL Server",
-                    "هەڵەی بنکەی دراوە",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                Shutdown();
-                return;
-            }
-        }
+            // خوێندنەوەی ڕێکخستنەکان - Load configuration
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-        // نیشاندانی پەنجەرەی چوونەژوورەوە - Show login window
-        var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
-        loginWindow.Show();
+            Configuration = builder.Build();
+
+            // ڕێکخستنی خزمەتگوزارییەکان - Configure services
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+            _serviceProvider = serviceCollection.BuildServiceProvider();
+
+            // دروستکردنی بنکەی دراوە - Initialize database
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<SupermarketDbContext>();
+                try
+                {
+                    context.Database.Migrate();
+                    DbSeeder.SeedAsync(context).Wait();
+                }
+                catch (Exception ex)
+                {
+                    // Log error to file
+                    File.WriteAllText("error.log", $"Database Error:\n{ex}\n\nInner: {ex.InnerException}");
+
+                    MessageBox.Show(
+                        $"Database connection failed:\n\n{ex.Message}\n\nInner: {ex.InnerException?.Message}\n\nCheck error.log for details",
+                        "Database Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    Shutdown();
+                    return;
+                }
+            }
+
+            // نیشاندانی پەنجەرەی چوونەژوورەوە - Show login window
+            var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
+            loginWindow.Show();
+        }
+        catch (Exception ex)
+        {
+            // Log all startup errors
+            File.WriteAllText("error.log", $"Startup Error:\n{ex}\n\nInner: {ex.InnerException}\n\nStack:\n{ex.StackTrace}");
+
+            MessageBox.Show(
+                $"Application startup failed:\n\n{ex.Message}\n\nInner: {ex.InnerException?.Message}\n\nCheck error.log for full details",
+                "Startup Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            Shutdown();
+        }
     }
 
     private void ConfigureServices(IServiceCollection services)
