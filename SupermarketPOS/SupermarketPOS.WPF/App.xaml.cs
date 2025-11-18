@@ -14,7 +14,7 @@ namespace SupermarketPOS.WPF;
 /// <summary>
 /// سەرەکی بەرنامە - Application Main
 /// </summary>
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     private ServiceProvider? _serviceProvider;
     public IConfiguration? Configuration { get; private set; }
