@@ -1,0 +1,210 @@
+<Window x:Class="SupermarketPOS.WPF.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="سیستەمی POS - سوپەرمارکێتی هیوا"
+        Height="900" Width="1600"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        FlowDirection="RightToLeft">
+
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- شریتی سەرەوە - Top Bar -->
+            <materialDesign:ColorZone Grid.Row="0"
+                                    Mode="PrimaryMid"
+                                    Padding="16"
+                                    materialDesign:ElevationAssist.Elevation="Dp4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- لۆگۆ و ناو - Logo and Name -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Store"
+                                               Width="32"
+                                               Height="32"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                        <TextBlock Text="سیستەمی POS - سوپەرمارکێتی هیوا"
+                                  FontSize="20"
+                                  FontWeight="Bold"
+                                  VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- زانیاری بەکارهێنەر - User Info -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Account"
+                                               Width="24"
+                                               Height="24"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                        <TextBlock Name="UserNameTextBlock"
+                                  Text="بەکارهێنەر"
+                                  FontSize="16"
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,20,0"/>
+                        <Button Content="چوونەدەرەوە"
+                               Click="LogoutButton_Click"
+                               Style="{StaticResource MaterialDesignFlatButton}"/>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:ColorZone>
+
+            <!-- ناوەڕۆک - Main Content -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- مێنیوی لا - Side Menu -->
+                <Border Grid.Column="0"
+                       Background="{DynamicResource MaterialDesignPaper}"
+                       BorderBrush="{DynamicResource MaterialDesignDivider}"
+                       BorderThickness="0,0,1,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="0,10,0,0">
+
+                            <!-- داشبۆرد - Dashboard -->
+                            <Button Name="DashboardButton"
+                                   Click="MenuButton_Click"
+                                   Tag="Dashboard"
+                                   Style="{StaticResource MaterialDesignFlatButton}"
+                                   HorizontalContentAlignment="Right"
+                                   Padding="20,15"
+                                   Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ViewDashboard"
+                                                           Width="24" Height="24"
+                                                           Margin="0,0,15,0"/>
+                                    <TextBlock Text="داشبۆرد" FontSize="16"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!-- فرۆشتن/کاشێر - Sales/POS -->
+                            <Button Name="POSButton"
+                                   Click="MenuButton_Click"
+                                   Tag="POS"
+                                   Style="{StaticResource MaterialDesignFlatButton}"
+                                   HorizontalContentAlignment="Right"
+                                   Padding="20,15"
+                                   Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="CashRegister"
+                                                           Width="24" Height="24"
+                                                           Margin="0,0,15,0"/>
+                                    <TextBlock Text="فرۆشتن - کاشێر" FontSize="16"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!-- بەڕێوەبردنی مەخزەن - Inventory -->
+                            <Button Name="InventoryButton"
+                                   Click="MenuButton_Click"
+                                   Tag="Inventory"
+                                   Style="{StaticResource MaterialDesignFlatButton}"
+                                   HorizontalContentAlignment="Right"
+                                   Padding="20,15"
+                                   Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Package"
+                                                           Width="24" Height="24"
+                                                           Margin="0,0,15,0"/>
+                                    <TextBlock Text="بەڕێوەبردنی مەخزەن" FontSize="16"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!-- کڕیارەکان - Customers -->
+                            <Button Name="CustomersButton"
+                                   Click="MenuButton_Click"
+                                   Tag="Customers"
+                                   Style="{StaticResource MaterialDesignFlatButton}"
+                                   HorizontalContentAlignment="Right"
+                                   Padding="20,15"
+                                   Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="AccountGroup"
+                                                           Width="24" Height="24"
+                                                           Margin="0,0,15,0"/>
+                                    <TextBlock Text="کڕیارەکان" FontSize="16"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!-- ڕاپۆرتەکان - Reports -->
+                            <Button Name="ReportsButton"
+                                   Click="MenuButton_Click"
+                                   Tag="Reports"
+                                   Style="{StaticResource MaterialDesignFlatButton}"
+                                   HorizontalContentAlignment="Right"
+                                   Padding="20,15"
+                                   Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ChartBar"
+                                                           Width="24" Height="24"
+                                                           Margin="0,0,15,0"/>
+                                    <TextBlock Text="ڕاپۆرتەکان" FontSize="16"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Separator Margin="10,10"/>
+
+                            <!-- ڕێکخستنەکان - Settings -->
+                            <Button Name="SettingsButton"
+                                   Click="MenuButton_Click"
+                                   Tag="Settings"
+                                   Style="{StaticResource MaterialDesignFlatButton}"
+                                   HorizontalContentAlignment="Right"
+                                   Padding="20,15"
+                                   Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Settings"
+                                                           Width="24" Height="24"
+                                                           Margin="0,0,15,0"/>
+                                    <TextBlock Text="ڕێکخستنەکان" FontSize="16"/>
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- ناوەڕۆکی سەرەکی - Main Content Area -->
+                <Border Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}">
+                    <Frame Name="MainFrame"
+                          NavigationUIVisibility="Hidden"
+                          Background="Transparent"/>
+                </Border>
+            </Grid>
+
+            <!-- شریتی خوارەوە - Status Bar -->
+            <materialDesign:ColorZone Grid.Row="2"
+                                    Mode="PrimaryLight"
+                                    Padding="10,5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Name="StatusTextBlock"
+                              Text="ئامادە"
+                              VerticalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="1"
+                              Name="DateTimeTextBlock"
+                              VerticalAlignment="Center"
+                              FontWeight="Bold"/>
+                </Grid>
+            </materialDesign:ColorZone>
+        </Grid>
+    </materialDesign:DialogHost>
+</Window>
